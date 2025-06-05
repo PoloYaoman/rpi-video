@@ -1,0 +1,13 @@
+#################################
+#                               #
+# List item template :          #
+#                               #
+# - [filenale] [video title]    #
+#                               #
+#################################
+
+- "kitten1.mp4" "Video 1"
+- "kitten2.mp4" "Video 2"
+- "kitten3.mp4" "Video 3"
+- "kitten4.mp4" "Video 4"
+- "kitten5.mp4" "Video 5"
