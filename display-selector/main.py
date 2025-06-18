@@ -3,6 +3,9 @@ import os
 import numpy as np
 import time
 
+import subprocess
+import sys
+
 
 def highlight_grid(frame, selected_idx, grid_shape=(3,2)):
     """Draws a yellow rectangle around the selected grid cell."""
@@ -19,22 +22,18 @@ def highlight_grid(frame, selected_idx, grid_shape=(3,2)):
     return frame
 
 
-def play_selected_video(video_path, window_name="window"):
-    cap = cv2.VideoCapture(video_path)
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-        cv2.imshow(window_name, frame)
-        key = cv2.waitKey(30)
-        if key == ord('q') or key == ord('s'):
-            break
-    cap.release()
+def play_selected_video(video_path):
+    """Opens the selected video in VLC player."""
+    vlc_command = ["C:\Program Files\VideoLAN\VLC\\vlc", "--fullscreen", "--play-and-exit", video_path]
+    try:
+        subprocess.run(vlc_command)
+    except FileNotFoundError:
+        print("VLC is not installed or not found in PATH.")
 
 
 def main():
     # Paths
-    video_dir = "video-tiler/example_videos"
+    video_dir = "input_videos"
     output_video = "output/tiled_video.mp4"
     video_files = [os.path.join(video_dir, f) for f in os.listdir(video_dir)
                    if os.path.splitext(f)[1].lower() in ['.mp4', '.avi', '.mov', '.mkv']]
@@ -82,7 +81,7 @@ def main():
         elif key == ord('s'):
             video_to_play = video_files[selected_idx]
             if video_to_play and os.path.exists(video_to_play):
-                play_selected_video(video_to_play, window_name="window")
+                play_selected_video(video_to_play)
                 # After playback, re-open the tiled video
                 cap.release()
                 cap = cv2.VideoCapture(output_video)

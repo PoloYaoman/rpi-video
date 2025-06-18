@@ -75,16 +75,6 @@ def resize_with_aspect_ratio(frame, target_width, target_height):
     return resized_frame, new_width, new_height
 
 
-# def read_titles(file_path):
-#     """Reads titles from a text file and returns them as a list."""
-#     if not os.path.exists(file_path):
-#         raise FileNotFoundError(f"Titles file not found: {file_path}")
-#     with open(file_path, 'r') as f:
-#         titles_lines = [line.strip() for line in f.readlines() if line[1] == '-'] # Only include lines that start with '-'
-#         titles = [(file[1], file[2]) for file in (line.split('"') for line in titles_lines)]
-#     return titles
-
-
 def create_grid_frame(
     clips, 
     frame_index,
@@ -116,21 +106,6 @@ def create_grid_frame(
             y_offset = y_start + (cell_height - new_height) // 2
             grid_frame[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = resized_frame
         
-        # Add title below the clip
-        # if titles and i < len(titles):
-        #     title = titles[i]
-        #     text_x = x_start + 10  # Add some padding from the left
-        #     text_y = y_start + 20  # Position the text within the title space
-        #     cv2.putText(
-        #         grid_frame, 
-        #         title, 
-        #         (text_x, text_y), 
-        #         fontFace=cv2.FONT_HERSHEY_SIMPLEX, 
-        #         fontScale=0.5, 
-        #         color=(255, 255, 255), 
-        #         thickness=1, 
-        #         lineType=cv2.LINE_AA
-        #     )
         else:
             # Fill with background color if the clip does not have enough frames
             grid_frame[y_start:y_start + cell_height, x_start:x_start + cell_width] = background_color
