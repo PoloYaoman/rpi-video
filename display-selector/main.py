@@ -62,19 +62,19 @@ def main():
         key = cv2.waitKeyEx(1) #& 0xFF
         if key == ord('q'):
             break
-        elif key == 2424832 :  # Left arrow
+        elif key == 65361:  # Left arrow
             # print('left arrow pressed')
             if selected_idx % grid_shape[0] > 0:
                 selected_idx -= 1
-        elif key == 2555904 :  # Right arrow
+        elif key == 65363:  # Right arrow
             # print('right arrow pressed')
             if selected_idx % grid_shape[0] < grid_shape[0] - 1:
                 selected_idx += 1
-        elif key == 2490368 :  # Up arrow
+        elif key == 65362:  # Up arrow
             # print('up arrow pressed')
             if selected_idx >= grid_shape[0]:
                 selected_idx -= grid_shape[0]
-        elif key == 2621440:  # Down arrow
+        elif key == 65364:  # Down arrow
             # print('down arrow pressed')
             if selected_idx < total_cells - grid_shape[0]:
                 selected_idx += grid_shape[0]
