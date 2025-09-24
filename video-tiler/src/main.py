@@ -4,6 +4,7 @@ import moviepy as mp
 import numpy as np
 
 import argparse
+from tqdm import tqdm
 
 from moviepy import ImageClip
 
@@ -52,14 +53,13 @@ def create_tiled_video(clips, output_file, grid_size=(3,2), titles=None, fps=30)
     grid_clips = clips[0:min(grid_size[0] * grid_size[1], len(clips))]
     valid_clips = [clip for clip in grid_clips if clip]  # Filter out invalid or empty clips
 
-    for frame in range(total_frames):
+    for frame in tqdm(range(total_frames), desc="Creating tiled video frames"):
         tiled_frame = create_grid_frame(valid_clips, frame, grid_size, titles=titles)
         # Convert NumPy array to ImageClip with explicit duration
         if isinstance(tiled_frame, np.ndarray) and tiled_frame.ndim == 3:
             tiled_clips.append(ImageClip(tiled_frame).with_duration(1/fps))
         else:
             raise ValueError("Invalid tiled_frame: Expected a 3-dimensional NumPy array representing an image.")
-        # tiled_clips.append(ImageClip(tiled_frame).with_duration(1/fps))
 
     final_video = mp.concatenate_videoclips(tiled_clips)
     final_video.write_videofile(output_file, fps=fps, codec='libx264', bitrate='2000k')
@@ -121,6 +121,7 @@ def main(directory, output_file):
     all_clips = []
 
     for video_file in video_files:
+        print(f"Processing video: {video_file}...")
         clips = extract_clips(video_file)
         all_clips.extend(clips)
 
