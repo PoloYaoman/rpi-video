@@ -1,10 +1,10 @@
 import cv2
 import os
 import numpy as np
-import time
+# import time
 
 import subprocess
-import sys
+# import sys
 
 
 def highlight_grid(frame, selected_idx, grid_shape=(3,2)):
@@ -15,9 +15,9 @@ def highlight_grid(frame, selected_idx, grid_shape=(3,2)):
     row = selected_idx // grid_shape[0]
     col = selected_idx % grid_shape[0]
     x1 = col * cell_w + 30
-    y1 = row * cell_h + 30
+    y1 = row * cell_h + 20
     x2 = x1 + cell_w - 60
-    y2 = y1 + cell_h - 60
+    y2 = y1 + cell_h - 70
     cv2.rectangle(frame, (x1, y1), (x2, y2), (0,255,255), 8)
     return frame
 
@@ -34,14 +34,19 @@ def play_selected_video(video_path):
 def main():
     # Paths
     video_dir = "input_videos"
-    output_video = "output/tiled_video.mp4"
+    image_path = "output/display_frame.jpg"
     video_files = [os.path.join(video_dir, f) for f in os.listdir(video_dir)
                    if os.path.splitext(f)[1].lower() in ['.mp4', '.avi', '.mov', '.mkv']]
 
     selected_idx = 0
     grid_shape = (3,2)
-    total_cells = grid_shape[0] * grid_shape[1]
     mouse_state = {'selected_idx': selected_idx, 'play': False}
+
+    # Load the static grid image
+    frame = cv2.imread(image_path)
+    if frame is None:
+        print(f"Could not load image: {image_path}")
+        return
 
     def mouse_callback(event, x, y, flags, param):
         frame_h, frame_w = param['frame_shape'][:2]
@@ -58,45 +63,23 @@ def main():
         if event == cv2.EVENT_LBUTTONDOWN:
             mouse_state['play'] = True
 
-    # Start video playback in a dedicated window
-    cap = cv2.VideoCapture(output_video)
     cv2.namedWindow("window", cv2.WND_PROP_FULLSCREEN)
     cv2.setWindowProperty("window",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
+    cv2.setMouseCallback("window", mouse_callback, param={'frame_shape': frame.shape})
 
-    # Set mouse callback
-    cv2.setMouseCallback("window", mouse_callback, param={'frame_shape': (720, 1280, 3)})
-
-    while(cap.isOpened()):
-        ret, frame = cap.read() 
-
-        if ret:
-            # Highlight the selected cell
-            display_frame = frame.copy()
-            highlight_grid(display_frame, mouse_state['selected_idx'], grid_shape)
-            cv2.imshow("window", display_frame)
-
-            # Update mouse callback param with actual frame shape
-            cv2.setMouseCallback("window", mouse_callback, param={'frame_shape': frame.shape})
-            time.sleep(1/30)
-        else:
-            print('no video')
-            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
-            continue
-        
-        key = cv2.waitKeyEx(1) #& 0xFF
+    while True:
+        display_frame = frame.copy()
+        highlight_grid(display_frame, mouse_state['selected_idx'], grid_shape)
+        cv2.imshow("window", display_frame)
+        key = cv2.waitKeyEx(1)
         if key == ord('q'):
             break
-
         if mouse_state['play']:
             video_to_play = video_files[mouse_state['selected_idx']]
             if video_to_play and os.path.exists(video_to_play):
                 play_selected_video(video_to_play)
-                # After playback, re-open the tiled video
-                cap.release()
-                cap = cv2.VideoCapture(output_video)
             mouse_state['play'] = False
 
-    cap.release()
     cv2.destroyAllWindows()
 
 

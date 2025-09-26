@@ -10,8 +10,8 @@ echo "Installing dependencies with pipx..."
 pip install -r video-tiler/requirements.txt || pipx inject $(basename $(pwd)) -r video-tiler/requirements.txt
 
 # 3. Run the video tiler program with input_videos as argument
-# echo "Running video tiler..."
-# python3 video-tiler/src/main.py input_videos
+echo "Running video tiler..."
+python3 video-tiler/src/main.py input_videos
 
 # 4. Ask for Raspberry Pi host and user
 read -p "Enter Raspberry Pi hostname or IP: " RPI_HOST
