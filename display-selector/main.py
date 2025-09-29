@@ -1,10 +1,7 @@
 import cv2
 import os
-import numpy as np
-# import time
 
 import subprocess
-# import sys
 
 
 def highlight_grid(frame, selected_idx, grid_shape=(3,2)):
@@ -24,13 +21,22 @@ def highlight_grid(frame, selected_idx, grid_shape=(3,2)):
 
 def play_selected_video(video_path):
     """Opens the selected video in VLC player."""
-    vlc_command = ["cvlc", "--fullscreen", "--play-and-exit", video_path]
+
+    vlc_command = [
+        "cvlc",
+        "--fullscreen",
+        "--play-and-exit",
+        video_path
+    ]
+    
     try:
-        subprocess.run(vlc_command)
+        # Run VLC and wait for it to finish
+        proc = subprocess.Popen(vlc_command)
+        proc.wait()  # Pause until video playback is done
     except FileNotFoundError:
         print("VLC is not installed or not found in PATH.")
 
-                
+
 def main():
     # Paths
     video_dir = "input_videos"
