@@ -47,7 +47,7 @@ Copy the following and restart:
   # Short-Description:    Plays selected video on loop
   ### END INIT INFO
 
-  touch ~/launch_vid1.bash
+  touch ~/rpi_video/launch_vid.bash
   ```
 
 
