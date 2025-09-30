@@ -17,7 +17,8 @@ def get_video_files(directory):
         raise ValueError(f"The specified directory does not exist: {directory}")
     
     video_extensions = ['.mp4', '.avi', '.mov', '.mkv']
-    return [os.path.join(directory, f) for f in os.listdir(directory) if os.path.splitext(f)[1].lower() in video_extensions] # get everything that ends with the video extensions
+    return [os.path.join(directory, f) for f in sorted(os.listdir(directory)) 
+            if os.path.splitext(f)[1].lower() in video_extensions] # get everything that ends with the video extensions
 
 
 def resize_with_aspect_ratio(frame, target_width, target_height):

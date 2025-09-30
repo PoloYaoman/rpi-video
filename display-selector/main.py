@@ -41,9 +41,9 @@ def main():
     # Paths
     video_dir = "input_videos"
     image_path = "output/display_frame.jpg"
-    video_files = [os.path.join(video_dir, f) for f in os.listdir(video_dir)
-                   if os.path.splitext(f)[1].lower() in ['.mp4', '.avi', '.mov', '.mkv']]
-
+    video_files = [os.path.join(video_dir, f) for f in sorted(os.listdir(video_dir))
+                    if os.path.splitext(f)[1].lower() in ['.mp4', '.avi', '.mov', '.mkv']]
+    
     selected_idx = 0
     grid_shape = (3,2)
     mouse_state = {'selected_idx': selected_idx, 'play': False}

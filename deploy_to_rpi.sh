@@ -19,6 +19,7 @@ read -p "Enter Raspberry Pi username: " RPI_USER
 
 # 5. Copy output, input_videos, and display-selector to ~/rpi-video on the Pi
 echo "Copying files to Raspberry Pi..."
+
 scp -r output input_videos display-selector "$RPI_USER@$RPI_HOST:~/rpi-video/"
 
 echo "Deployment complete! Restart your RPI!"
