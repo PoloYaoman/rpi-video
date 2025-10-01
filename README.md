@@ -23,6 +23,9 @@ This repository contains code that renders a video selector, designed for use wi
 `deploy_to_rpi.sh` script prepares and renders a program with packed videos that can be copied onto a Raspberry Pi. 
 
   ```bash
+  git clone https://github.com/PoloYaoman/rpi-video.git
+  cd rpi-video
+  souce .venv/bin/activate
   sh deploy_to_rpi.sh
   ```
 
@@ -59,6 +62,7 @@ Processes input videos and creates a tiled output video.
 - Place your input videos in the `input_videos/` directory.
 - Run the tiler script:
   ```bash
+  souce .venv/bin/activate
   cd video-tiler/src
   python main.py
   ```
@@ -69,6 +73,7 @@ Lets the user select a video to play. Should be run from a Raspberry Pi, where f
 
 - Run the display selector script:
   ```bash
+  souce .venv/bin/activate
   cd display-selector
   python main.py
   ```
