@@ -79,7 +79,7 @@ def create_grid_frame(
         if titles and i < len(titles):
             title_text = titles[i]
             font = cv2.FONT_HERSHEY_COMPLEX
-            font_scale = 1.0
+            font_scale = 0.6
             font_thickness = 2
             text_size, _ = cv2.getTextSize(title_text, font, font_scale, font_thickness)
             text_x = x_start + (cell_width - text_size[0]) // 2

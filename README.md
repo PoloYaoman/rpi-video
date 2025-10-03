@@ -20,6 +20,8 @@ This repository contains code that renders a video selector, designed for use wi
 
 ## Usage
 
+### 1. Run the installation script
+
 `deploy_to_rpi.sh` script prepares and renders a program with packed videos that can be copied onto a Raspberry Pi. 
 
   ```bash
@@ -30,6 +32,8 @@ This repository contains code that renders a video selector, designed for use wi
   ```
 
 Note that this script will overwrite but not delete previously uploaded videos, which will have to be purged manually for the display selector to work properly.
+
+### 2. Add startup service
 
 The launch script will be copied to the Raspberry. It was initially intended for a plug-and-play display and can be run on startup. You can use a method of your choice. I achieved that by adding a service to `init.d` : 
 
@@ -53,10 +57,23 @@ Copy the following and restart:
   touch ~/rpi_video/launch_vid.bash
   ```
 
+### 3. Remove shutdown authentification requirement
 
-The installation can also be performed manually:
+The program also requires permission to shutdown the Raspberrry without authentification, before it can be unplugged. In order to remove the authentification requirement, run :
 
-### 1. Video Tiler (included in the deploy script)
+  ```bash
+  sudo visodo
+  ```
+
+Add the following line at the end of the file :
+
+  ```bash
+  stcyr  ALL=(ALL) NOPASSWD: /usr/sbin/shutdown
+  ```
+
+
+## Video Tiler (included in the deploy script)
+
 Processes input videos and creates a tiled output video.
 
 - Place your input videos in the `input_videos/` directory.
@@ -68,8 +85,10 @@ Processes input videos and creates a tiled output video.
   ```
 - The output will be saved in the `output/` directory.
 
-### 2. Display Selector (included in the deploy script)
-Lets the user select a video to play. Should be run from a Raspberry Pi, where folders `display-selector`, `input_videos`and `output` must be copied.
+
+## Display Selector (included in the deploy script)
+
+Lets the user select a video to play. Requires Video Tiler to generate the appropriate files first. Should be run from a Raspberry Pi, where folders `display-selector`, `input_videos`and `output` must be copied.
 
 - Run the display selector script:
   ```bash

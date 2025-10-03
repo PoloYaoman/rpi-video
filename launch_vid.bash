@@ -15,3 +15,6 @@ fi
 
 export DISPLAY=:0.0
 QT_QPA_PLATFORM=linuxfb python3 display-selector/main.py
+
+# clear
+# shutdown now
